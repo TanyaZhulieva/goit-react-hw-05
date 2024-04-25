@@ -1,5 +1,7 @@
-export default function MoviesPage(){
-    return <div>
-        Movies
-    </div>
+
+
+export default function MoviesPage() {
+ return <div>
+    
+ </div>
 }
