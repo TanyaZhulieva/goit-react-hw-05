@@ -1,6 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useParams, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieById } from "/src/movies-api.js";
+import MovieCard from "../../components/MovieCard/MovieCard";
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -14,7 +15,7 @@ export default function MovieDetailsPage() {
       try {
         setIsLoading(true);
         const data = await getMovieById(movieId);
-        setMovie(data)
+        setMovie(data);
       } catch (error) {
         setError(true);
       } finally {
@@ -24,12 +25,20 @@ export default function MovieDetailsPage() {
 
     fetchMovie();
   }, [movieId]);
-
-  console.log(movie);
-
+console.log(movie);
   return (
     <div>
       <h2>movie details</h2>
+      {movie && <MovieCard movie={movie} />}
+      <ul>
+        <li>
+          <NavLink to="cast">Cast</NavLink>
+        </li>
+        <li>
+          <NavLink to="reviews">Reviews</NavLink>
+        </li>
+      </ul>
+      <Outlet/>
     </div>
   );
 }
