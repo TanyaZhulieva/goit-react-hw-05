@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import css from "./MovieCard.module.css";
 
 export default function MovieCard({
   movie: {
@@ -12,7 +13,9 @@ export default function MovieCard({
   },
 }) {
   const location = useLocation();
-  const backLinkURL = useRef(location.state ?? "/movies")
+  const backLinkURL = useRef(location.state ?? "/movies");
+  const releaseDate = new Date(release_date).getFullYear();
+  const score = Math.round(vote_average * 10);
 
   const getGenres = (items) => {
     return items.map((item) => item.name).join(" ");
@@ -22,18 +25,24 @@ export default function MovieCard({
   return (
     <>
       <div>
-        <NavLink to={backLinkURL.current}>Go back</NavLink>
+        <NavLink to={backLinkURL.current} className={css.backLink}>
+          Go back
+        </NavLink>
       </div>
-      <img src={path} alt={original_title} />
-      <h2>
-        {original_title} ({release_date})
-      </h2>
-      <p>User score: {vote_average}</p>
-      <h3>Overwiew</h3>
-      <p>{overview}</p>
-      <h3>Genres</h3>
-      <p>{getGenres(genres)}</p>
-      <h4>Additional information</h4>
+      <div className={css.movieWrap}>
+        <img src={path} alt={original_title} width="250" />
+        <div>
+          <h2>
+            {original_title} ({releaseDate})
+          </h2>
+          <p>User score: {score}%</p>
+          <h3>Overwiew</h3>
+          <p>{overview}</p>
+          <h3>Genres</h3>
+          <p>{getGenres(genres)}</p>
+        </div>
+      </div>
+      <h3>Additional information</h3>
     </>
   );
 }

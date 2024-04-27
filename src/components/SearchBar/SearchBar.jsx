@@ -3,8 +3,6 @@ export default function SearchBar({ onSearch }) {
     evt.preventDefault();
     const form = evt.target;
     const request = form.elements.input.value;
-    
-    console.log(request);
 
     onSearch(request.trim());
     form.reset();
@@ -16,7 +14,6 @@ export default function SearchBar({ onSearch }) {
         <input type="text" name="input" />
         <button type="submit">Search</button>
       </div>
-      {/* <Toaster /> */}
     </form>
   );
 }

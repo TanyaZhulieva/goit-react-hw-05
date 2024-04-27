@@ -2,6 +2,8 @@ import { useParams, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieById } from "/src/movies-api.js";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+import LoadingMessage from '../../components/LoadingMessage/LoadingMessage'
 import { Suspense } from "react";
 
 export default function MovieDetailsPage() {
@@ -29,8 +31,9 @@ export default function MovieDetailsPage() {
 
   return (
     <div>
-      {error && <p>Error!!!</p>}
-      {isLoading && <p>Loading...</p>}
+      {error && <ErrorMessage/>}
+      { isLoading && <LoadingMessage/>}
+
       {movie && <MovieCard movie={movie} />}
       <ul>
         <li>

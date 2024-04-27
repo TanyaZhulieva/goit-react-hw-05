@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieReviews } from "/src/movies-api.js";
-import ReviewCard from '../ReviewCard/ReviewCard'
+import ReviewCard from "../ReviewCard/ReviewCard";
+import LoadingMessage from "../LoadingMessage/LoadingMessage";
 
 export default function MovieReviews() {
   const { movieId } = useParams();
@@ -15,9 +16,15 @@ export default function MovieReviews() {
       try {
         setIsLoading(true);
         const data = await getMovieReviews(movieId);
+
+        if (data.length === 0) {
+          throw new Error("We have no reviews for this movie");
+        }
+
         setRewiews(data);
       } catch (error) {
-        setError(true);
+        console.log(error);
+        setError(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -25,20 +32,25 @@ export default function MovieReviews() {
 
     fetchMovieReviews();
   }, [movieId]);
-  console.log(reviews);
 
   return (
     <>
-      {error && <p>Error!!!</p>}
-      {isLoading && <p>Loading...</p>}
-      {reviews && <ul>
+      {error && (
+        <div>
+          <p>We have no reviews for this movie</p>
+        </div>
+      )}
+      {isLoading && <LoadingMessage />}
+
+      {reviews && (
+        <ul>
           {reviews.map((review) => (
             <li key={review.id}>
               <ReviewCard review={review} />
             </li>
           ))}
-        </ul>}
-      
+        </ul>
+      )}
     </>
   );
 }

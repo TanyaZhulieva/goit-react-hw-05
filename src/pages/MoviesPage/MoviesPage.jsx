@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { getMovies } from "/src/movies-api.js";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import MovieList from '../../components/MovieList/MovieList'
-
-
+import MovieList from "../../components/MovieList/MovieList";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
+import LoadingMessage from "../../components/LoadingMessage/LoadingMessage";
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
@@ -19,8 +19,8 @@ export default function MoviesPage() {
 
   useEffect(() => {
     if (query === "") {
-        return;
-      }
+      return;
+    }
 
     async function fetchMovies() {
       try {
@@ -37,13 +37,13 @@ export default function MoviesPage() {
     fetchMovies();
   }, [query]);
 
-  console.log(movies);
-
   return (
     <div>
-      <SearchBar onSearch={handleSearch} />
-      {movies.length > 0 && <MovieList movies={movies}/>}
+      {error && <ErrorMessage />}
+      {isLoading && <LoadingMessage />}
 
+      <SearchBar onSearch={handleSearch} />
+      {movies.length > 0 && <MovieList movies={movies} />}
     </div>
   );
 }

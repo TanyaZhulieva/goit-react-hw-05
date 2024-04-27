@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieCast } from "/src/movies-api.js";
 import ActorCard from "../ActorCard/ActorCard";
+import LoadingMessage from "../LoadingMessage/LoadingMessage";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export default function MovieCast() {
   const { movieId } = useParams();
@@ -25,11 +27,12 @@ export default function MovieCast() {
 
     fetchMovieCast();
   }, [movieId]);
-  console.log(cast);
+
   return (
     <div>
-      {error && <p>Error!!!</p>}
-      {isLoading && <p>Loading...</p>}
+      {error && <ErrorMessage />}
+      {isLoading && <LoadingMessage />}
+
       {cast && (
         <ul>
           {cast.map((actor) => (
