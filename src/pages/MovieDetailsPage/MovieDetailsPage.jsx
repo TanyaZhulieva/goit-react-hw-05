@@ -2,6 +2,7 @@ import { useParams, NavLink, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getMovieById } from "/src/movies-api.js";
 import MovieCard from "../../components/MovieCard/MovieCard";
+import { Suspense } from "react";
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -25,10 +26,11 @@ export default function MovieDetailsPage() {
 
     fetchMovie();
   }, [movieId]);
-console.log(movie);
+
   return (
     <div>
-      <h2>movie details</h2>
+      {error && <p>Error!!!</p>}
+      {isLoading && <p>Loading...</p>}
       {movie && <MovieCard movie={movie} />}
       <ul>
         <li>
@@ -38,7 +40,9 @@ console.log(movie);
           <NavLink to="reviews">Reviews</NavLink>
         </li>
       </ul>
-      <Outlet/>
+      <Suspense fallback={null}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 }
